@@ -1,0 +1,11 @@
+version: "2.1"
+services:
+
+  rabbitmq:
+    image: 'bitnami/rabbitmq:latest'
+    ports:
+      - 15672:15672
+      - 5672:5672
+    environment:
+      - RABBITMQ_USERNAME=admin
+      - RABBITMQ_PASSWORD=admin
