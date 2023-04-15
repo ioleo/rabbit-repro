@@ -10,7 +10,9 @@ object EventRoundTripDaemon:
 
   val rabbitmq: URLayer[EventQueuePublisher & EventQueueConsumer, EventRoundTripDaemonRabbitMq] = ZLayer(
     for
+      _         <- ZIO.logInfo("Building EventRoundTripDaemonRabbitMq...")
       publisher <- ZIO.service[EventQueuePublisher]
       consumer  <- ZIO.service[EventQueueConsumer]
+      _         <- ZIO.logInfo("Built EventRoundTripDaemonRabbitMq")
     yield EventRoundTripDaemonRabbitMq(publisher, consumer)
   )

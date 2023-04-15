@@ -20,10 +20,12 @@ object EventQueueConsumer:
 
   val live: ZLayer[Connection[Task] & RabbitMqConfig, Throwable, EventQueueConsumer] = ZLayer.scoped(
     for
+      _          <- ZIO.logInfo("Building EventQueueConsumer...")
       connection <- ZIO.service[Connection[Task]]
       config     <- ZIO.service[RabbitMqConfig]
       channel    <- connection.channel.toScopedZIO
       stream      = channel.messaging.consume[String](QueueName.from(config.queues.events).toOption.get, ConsumeMode.NackOnError).toZStream()
+      _          <- ZIO.logInfo("Built EventQueueConsumer")
     yield EventQueueConsumerLive(stream, config)
   )
 

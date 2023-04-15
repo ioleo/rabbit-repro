@@ -19,6 +19,7 @@ object EventQueuePublisher:
 
   val live: ZLayer[Connection[Task] & RabbitMqConfig, Throwable, EventQueuePublisher] = ZLayer.scoped(
     for
+      _             <- ZIO.logInfo("Building EventQueuePublisher...")
       connection    <- ZIO.service[Connection[Task]]
       config        <- ZIO.service[RabbitMqConfig]
       channel       <- connection.channel.toScopedZIO
@@ -28,6 +29,7 @@ object EventQueuePublisher:
       _             <- channel.exchange.declare(eventsExchange, ExchangeType.Direct)
       _             <- channel.queue.declare(eventsQueue)
       _             <- channel.queue.bind(eventsQueue, eventsExchange, eventsKey)
+      _             <- ZIO.logInfo("Built EventQueuePublisher")
     yield EventQueuePublisherLive(channel.messaging, config)
   )
 
