@@ -22,7 +22,7 @@ object Dependencies {
     val zioSchema = "0.4.10"
 
     // messaging
-    val lepus = "0.1.+"
+    val lepus = "0.3.+"
 
     // misc
     val zioUlid = "1.1.+"
